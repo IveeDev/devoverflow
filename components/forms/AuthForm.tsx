@@ -109,7 +109,7 @@ const AuthForm = <TSchema extends z.ZodType<FieldValues>>({
 
         <Button
           disabled={form.formState.isSubmitting}
-          className="primary-gradient paragraph-medium w-full min-h-12 rounded-2 px-4 py-3.5 font-inter !text-light-900"
+          className="primary-gradient paragraph-medium w-full min-h-12 rounded-2 px-4 py-3.5 font-inter text-light-900!"
         >
           {form.formState.isSubmitting
             ? buttonText === "Sign In"
