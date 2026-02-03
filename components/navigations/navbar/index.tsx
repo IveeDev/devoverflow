@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ThemeToggle from "./ThemeToggle";
+import MobileNavigation from "./MobileNavigation";
 
 const NavBar = () => {
   return (
@@ -22,6 +23,7 @@ const NavBar = () => {
 
       <div className="flex-between gap-5">
         <ThemeToggle />
+        <MobileNavigation />
       </div>
     </nav>
   );
