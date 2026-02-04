@@ -22,7 +22,7 @@ const RightSideBar = () => {
     { _id: "5", name: "Tailwind CSS", questions: 10 },
   ];
   return (
-    <section className="pt-36 custom-scrollbar background-light900_dark200 light-border sticky right-0 h-screen flex flex-col justify-between overflow-y-auto border-l p-6  shadow-light-300 dark:shadow-none max-xl:hidden w-[350px]">
+    <section className="pt-36 custom-scrollbar background-light900_dark200 light-border sticky right-0 top-0 h-screen flex flex-col justify-between overflow-y-auto border-l p-6  shadow-light-300 dark:shadow-none max-xl:hidden w-[350px]">
       <div>
         <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
 
