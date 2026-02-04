@@ -7,7 +7,7 @@ import { getDeviconClassName } from "@/lib/utils";
 interface Props {
   _id: string;
   name: string;
-  questions: number;
+  questions?: number;
   showCount?: boolean;
   compact?: boolean;
 }
@@ -16,7 +16,7 @@ const TagCard = ({ _id, name, questions, showCount, compact }: Props) => {
   const iconClass = getDeviconClassName(name);
   return (
     <Link
-      href={ROUTES.TAG.replace(":id", _id)}
+      href={ROUTES.TAG(_id)}
       className="flex items-center justify-between gap-2"
     >
       <Badge

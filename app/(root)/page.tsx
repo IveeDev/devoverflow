@@ -1,62 +1,50 @@
 import { auth, signOut } from "@/auth";
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import Link from "next/link";
 
-const questions = [
+const questions: Question[] = [
   {
-    id: 1,
+    _id: "1",
     title: "What is the best way to learn React?",
-    description: "I want to learn React to build a web application.",
+    content: "I want to learn React to build a web application.",
     tags: [
-      {
-        id: 1,
-        name: "React",
-        description:
-          "React is a JavaScript library for building user interfaces.",
-      },
-      {
-        id: 2,
-        name: "JavaScript",
-        description: "JavaScript is a programming language for the web.",
-      },
-      {
-        id: 3,
-        name: "Web Development",
-        description: "Web development is the process of building websites.",
-      },
+      { _id: "1", name: "React" },
+      { _id: "2", name: "JavaScript" },
+      { _id: "3", name: "Web Development" },
     ],
     answers: 10,
     views: 100,
+    upvotes: 5,
+    downvotes: 0,
     createdAt: new Date(),
     author: {
-      id: 1,
+      _id: "2",
       name: "John Doe",
-      email: "john.doe@example.com",
+      image: "/icons/user.svg",
     },
   },
   {
-    id: 2,
+    _id: "2",
     title: "What is the best way to learn React?",
-    description: "I want to learn React to build a web application.",
+    content: "I want to learn React to build a web application.",
     tags: [
-      {
-        id: 1,
-        name: "React",
-        description:
-          "React is a JavaScript library for building user interfaces.",
-      },
-      {
-        id: 2,
-        name: "JavaScript",
-        description: "JavaScript is a programming language for the web.",
-      },
+      { _id: "1", name: "React" },
+      { _id: "2", name: "JavaScript" },
     ],
     answers: 10,
     views: 100,
+    upvotes: 3,
+    downvotes: 1,
     createdAt: new Date(),
+    author: {
+      _id: "3",
+      name: "Jane Smith",
+      image: "/icons/user.svg",
+    },
   },
 ];
 
@@ -91,9 +79,9 @@ const Home = async ({ searchParams }: SearchParams) => {
         />
       </section>
       <HomeFilter />
-      <div className="mt-10 flex w-full flex-col">
+      <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
-          <h1 key={question.id}>{question.title}</h1>
+          <QuestionCard key={question._id} question={question} />
         ))}
       </div>
     </>

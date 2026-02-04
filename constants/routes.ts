@@ -1,17 +1,16 @@
-const ROUTES: Record<string, string> = {
+const ROUTES = {
   HOME: "/",
-  ASK_QUESTION: "/ask-question",
   SIGN_IN: "/sign-in",
   SIGN_UP: "/sign-up",
-  QUESTION: "/question/:id",
-  TAG: "/tag/:id",
-  USER: "/user/:id",
-  PROFILE: "/profile",
-  SETTINGS: "/settings",
-  COLLECTIONS: "/collections",
-  NOTIFICATIONS: "/notifications",
-  MESSAGES: "/messages",
-  BOOKMARKS: "/bookmarks",
+  ASK_QUESTION: "/ask-question",
+  COLLECTION: "/collection",
+  COMMUNITY: "/community",
+  TAGS: "/tags",
+  JOBS: "/jobs",
+  PROFILE: (id: string) => `/profile/${id}`,
+  QUESTION: (id: string) => `/questions/${id}`,
+  TAG: (id: string) => `/tags/${id}`,
+  SIGN_IN_WITH_OAUTH: `signin-with-oauth`,
 };
 
 export default ROUTES;
