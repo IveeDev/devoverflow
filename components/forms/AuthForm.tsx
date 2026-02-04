@@ -100,7 +100,6 @@ const AuthForm = <TSchema extends z.ZodType<FieldValues>>({
                     className="paragraph-regular background-light-900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
