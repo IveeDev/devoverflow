@@ -30,7 +30,8 @@ const QuestionCard = ({
             key={tag._id}
             _id={tag._id}
             name={tag.name}
-            questions={tag.questions ?? 0}
+            // questions={tag.questions ?? 0}
+            compact
           />
         ))}
       </div>
