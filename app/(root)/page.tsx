@@ -9,6 +9,8 @@ import Link from "next/link";
 import logger from "@/lib/logger";
 import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
+import { api } from "@/lib/api";
+import { IUser } from "@/database/user.model";
 
 const questions: Question[] = [
   {
@@ -54,8 +56,7 @@ const questions: Question[] = [
 
 const test = async () => {
   try {
-    await dbConnect();
-    return "success";
+    return await api.users.getAll();
   } catch (error) {
     return handleError(error);
   }
@@ -66,8 +67,8 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const result = await test();
-  logger.info(result);
+  const users = await test();
+  logger.info(users);
 
   const { query = "" } = await searchParams;
   const filteredQuestions = questions.filter((question) =>
