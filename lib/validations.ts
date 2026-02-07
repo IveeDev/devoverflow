@@ -74,16 +74,16 @@ export const UserSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.email({ message: "Invalid email address" }),
   bio: z.string().optional(),
-  image: z.string().url("Invalid image URL").optional(),
+  image: z.url({ error: "Invalid image URL" }).optional(),
   location: z.string().optional(),
-  portfolio: z.string().url("Invalid portfolio URL").optional(),
+  portfolio: z.url({ error: "Invalid portfolio URL" }).optional(),
   reputation: z.number().optional(),
 });
 
 export const AccountSchema = z.object({
   userId: z.string(),
   name: z.string().min(1, "Name is required"),
-  image: z.string().url("Invalid image URL").optional(),
+  image: z.url({ error: "Invalid image URL" }).optional(),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long." })
@@ -110,7 +110,7 @@ export const SignInWithOAuthSchema = z.object({
     name: z.string().min(1, "Name is required"),
     username: z.string().min(3, "Username must be at least 3 characters"),
     email: z.email({ message: "Invalid email address" }),
-    image: z.string().url("Invalid image URL").optional(),
+    image: z.url({ error: "Invalid image URL" }).optional(),
   }),
 });
 
@@ -242,7 +242,7 @@ export const ProfileSchema = z.object({
   username: z
     .string()
     .min(3, { message: "username musn't be longer then 100 characters." }),
-  portfolio: z.string().url({ message: "Please provide valid URL" }),
+  portfolio: z.url({ error: "Please provide valid URL" }),
   location: z.string().min(3, { message: "Please provide proper location" }),
   bio: z.string().min(3, {
     message: "Bio must be at least 3 characters.",
@@ -259,7 +259,7 @@ export const UpdateUserSchema = z.object({
   username: z
     .string()
     .min(3, { message: "username musn't be longer then 100 characters." }),
-  portfolio: z.string().url({ message: "Please provide valid URL" }),
+  portfolio: z.url({ error: "Please provide valid URL" }),
   location: z.string().min(3, { message: "Please provide proper location" }),
   bio: z.string().min(3, {
     message: "Bio must be at least 3 characters.",
