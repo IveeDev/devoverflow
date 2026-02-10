@@ -48,13 +48,13 @@ const AuthForm = <TSchema extends z.ZodType<FieldValues>>({
   });
 
   const handleSubmit: SubmitHandler<z.infer<TSchema>> = async (data) => {
-    const result = await onSubmit(data);
+    const result = (await onSubmit(data)) as ActionResponse;
 
     if (result?.success) {
       toast.success(
         formType === "SIGN_IN"
           ? "Signed in successfully"
-          : "Signed up successfully"
+          : "Signed up successfully",
       );
 
       router.push(ROUTES.HOME);
