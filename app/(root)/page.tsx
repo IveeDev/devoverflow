@@ -54,21 +54,13 @@ const questions: Question[] = [
   },
 ];
 
-const test = async () => {
-  try {
-    return await api.users.getAll();
-  } catch (error) {
-    return handleError(error);
-  }
-};
-
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const users = await test();
-  logger.info(users);
+  const session = await auth();
+  console.log("Session:", session);
 
   const { query = "" } = await searchParams;
   const filteredQuestions = questions.filter((question) =>
