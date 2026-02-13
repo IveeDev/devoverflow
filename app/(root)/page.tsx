@@ -11,61 +11,26 @@ import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
 import { api } from "@/lib/api";
 import { IUser } from "@/database/user.model";
-
-const questions: Question[] = [
-  {
-    _id: "1",
-    title: "What is the best way to learn React?",
-    content: "I want to learn React to build a web application.",
-    tags: [
-      { _id: "1", name: "React" },
-      { _id: "2", name: "JavaScript" },
-      { _id: "3", name: "Web Development" },
-    ],
-    answers: 10,
-    views: 100,
-    upvotes: 5,
-    downvotes: 0,
-    createdAt: new Date(),
-    author: {
-      _id: "2",
-      name: "John Doe",
-      image: "/icons/user.svg",
-    },
-  },
-  {
-    _id: "2",
-    title: "What is the best way to learn React?",
-    content: "I want to learn React to build a web application.",
-    tags: [
-      { _id: "1", name: "React" },
-      { _id: "2", name: "JavaScript" },
-    ],
-    answers: 10,
-    views: 100,
-    upvotes: 3,
-    downvotes: 1,
-    createdAt: new Date(),
-    author: {
-      _id: "3",
-      name: "Jane Smith",
-      image: "/icons/user.svg",
-    },
-  },
-];
+import { getQuestions } from "@/lib/actions/question.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const session = await auth();
-  console.log("Session:", session);
+  const { page, pageSize, query, filter } = await searchParams;
 
-  const { query = "" } = await searchParams;
-  const filteredQuestions = questions.filter((question) =>
-    question.title.toLowerCase().includes(query.toLowerCase()),
-  );
+  const { success, data, error } = await getQuestions({
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    query,
+    filter,
+  });
+
+  const { questions } = data || {};
+  // const filteredQuestions = questions.filter((question) =>
+  //   question.title.toLowerCase().includes(query.toLowerCase()),
+  // );
 
   return (
     <>
@@ -88,11 +53,28 @@ const Home = async ({ searchParams }: SearchParams) => {
         />
       </section>
       <HomeFilter />
-      <div className="mt-10 flex w-full flex-col gap-6">
-        {filteredQuestions.map((question) => (
-          <QuestionCard key={question._id} question={question} />
-        ))}
-      </div>
+
+      {success ? (
+        <div className="mt-10 flex w-full flex-col gap-6">
+          {questions && questions?.length > 0 ? (
+            <>
+              {questions?.map((question) => (
+                <QuestionCard key={question._id} question={question} />
+              ))}
+            </>
+          ) : (
+            <div className="mt-10 flex w-full items-center justify-center">
+              <p className="text-dark200_light900">No questions found</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="mt-10 flex w-full items-center justify-center">
+          <p className="text-dark200_light900">
+            {error?.message || "Something went wrong"}
+          </p>
+        </div>
+      )}
     </>
   );
 };
