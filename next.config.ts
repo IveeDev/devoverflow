@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
+  transpilePackages: ["next-mdx-remote"],
 };
 
 export default nextConfig;
