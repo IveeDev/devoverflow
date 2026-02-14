@@ -6,10 +6,7 @@ import { after } from "next/server";
 
 import { auth } from "@/auth";
 import { Answer, Collection, Interaction, Vote } from "@/database";
-import Question, {
-  IQuestionDoc,
-  IQuestionDoc,
-} from "@/database/question.model";
+import Question, { IQuestionDoc } from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
 import Tag, { ITagDoc } from "@/database/tag.model";
 import action from "@/lib/handlers/action";
