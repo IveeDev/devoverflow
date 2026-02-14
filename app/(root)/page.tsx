@@ -15,11 +15,7 @@ import { getQuestions } from "@/lib/actions/question.action";
 import DataRenderer from "@/components/DataRenderer";
 import { EMPTY_QUESTION } from "@/constants/states";
 
-interface SearchParams {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}
-
-const Home = async ({ searchParams }: SearchParams) => {
+const Home = async ({ searchParams }: RouteParams) => {
   const { page, pageSize, query, filter } = await searchParams;
 
   const { success, data, error } = await getQuestions({
