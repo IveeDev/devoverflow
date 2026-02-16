@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 
 import { AnswerSchema } from "@/lib/validations";
+import { createAnswer } from "@/lib/actions/answer.action";
+import { toast } from "sonner";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,
@@ -27,11 +29,11 @@ const Editor = dynamic(() => import("@/components/editor"), {
 
 interface Props {
   questionId: string;
-  questionTitle: string;
-  questionContent: string;
+  // questionTitle: string;
+  // questionContent: string;
 }
 
-const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
+const AnswerForm = ({ questionId }: Props) => {
   const [isAnswering, startAnsweringTransition] = useTransition();
   const [isAISubmitting, setIsAISubmitting] = useState(false);
   const session = useSession();
@@ -46,7 +48,24 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
   });
 
   const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
-    console.log(values);
+    startAnsweringTransition(async () => {
+      const result = await createAnswer({
+        questionId,
+        content: values.content,
+      });
+
+      if (result.success) {
+        form.reset();
+
+        toast.success("Success!", {
+          description: "Your question has been created successfully!",
+        });
+      } else {
+        toast.error(`Error ${result?.status ?? ""}`, {
+          description: result?.error?.message,
+        });
+      }
+    });
   };
 
   return (
