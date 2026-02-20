@@ -21,7 +21,7 @@ import {
 
 import { AnswerSchema } from "@/lib/validations";
 import { createAnswer } from "@/lib/actions/answer.action";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { api } from "@/lib/api";
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -194,7 +194,6 @@ const AnswerForm = ({ questionId, questionContent, questionTitle }: Props) => {
           </div>
         </form>
       </Form>
-      <Toaster />
     </div>
   );
 };

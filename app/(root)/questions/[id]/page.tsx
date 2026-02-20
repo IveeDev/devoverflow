@@ -12,6 +12,7 @@ import { after } from "next/server";
 import AnswerForm from "@/components/forms/AnswerForm";
 import { getAnswers } from "@/lib/actions/answer.action";
 import AllAnswers from "@/components/answers/AllAnswers";
+import Votes from "@/components/votes/Votes";
 
 const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
@@ -35,7 +36,6 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
     filter: "latest",
   });
 
-  console.log("Answers", answersResult);
   const { author, createdAt, answers, views, tags, content, title } = question!;
   return (
     <>
@@ -57,15 +57,12 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
           </div>
 
           <div className="flex items-center justify-end gap-4">
-            {/* <Suspense fallback={<div>Loading...</div>}>
-              <Votes
-                targetType="question"
-                upvotes={question.upvotes}
-                downvotes={question.downvotes}
-                targetId={question._id}
-                hasVotedPromise={hasVotedPromise}
-              />
-            </Suspense> */}
+            <Votes
+              upvotes={question.upvotes}
+              downvotes={question.downvotes}
+              hasUpvoted={true}
+              hasDownvoted={false}
+            />
 
             {/* <Suspense fallback={<div>Loading...</div>}>
               <SaveQuestion
