@@ -21,7 +21,8 @@ import {
 
 import { AnswerSchema } from "@/lib/validations";
 import { createAnswer } from "@/lib/actions/answer.action";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
+import { api } from "@/lib/api";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,
@@ -29,11 +30,11 @@ const Editor = dynamic(() => import("@/components/editor"), {
 
 interface Props {
   questionId: string;
-  // questionTitle: string;
-  // questionContent: string;
+  questionTitle: string;
+  questionContent: string;
 }
 
-const AnswerForm = ({ questionId }: Props) => {
+const AnswerForm = ({ questionId, questionContent, questionTitle }: Props) => {
   const [isAnswering, startAnsweringTransition] = useTransition();
   const [isAISubmitting, setIsAISubmitting] = useState(false);
   const session = useSession();
@@ -47,6 +48,8 @@ const AnswerForm = ({ questionId }: Props) => {
     },
   });
 
+  // ============================
+  // Handle regular answer submission
   const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
     startAnsweringTransition(async () => {
       const result = await createAnswer({
@@ -56,16 +59,72 @@ const AnswerForm = ({ questionId }: Props) => {
 
       if (result.success) {
         form.reset();
-
         toast.success("Success!", {
-          description: "Your question has been created successfully!",
+          description: "Your answer has been created successfully!",
         });
+
+        if (editorRef.current) {
+          editorRef.current.setMarkdown("");
+        }
       } else {
         toast.error(`Error ${result?.status ?? ""}`, {
           description: result?.error?.message,
         });
       }
     });
+  };
+
+  // ============================
+  // Generate AI answer
+  // ============================
+  const generateAIAnswer = async () => {
+    if (session.status !== "authenticated") {
+      return toast("Please log in", {
+        description: "You need to be logged in to use this feature!",
+      });
+    }
+
+    setIsAISubmitting(true);
+
+    const userAnswer = editorRef.current?.getMarkdown();
+
+    try {
+      toast.promise(
+        (async () => {
+          const { success, data, error } = await api.ai.getAnswer(
+            questionTitle,
+            questionContent,
+            userAnswer,
+          );
+
+          if (!success) {
+            throw new Error(error?.message || "Failed to generate AI answer");
+          }
+
+          const formattedAnswer = data
+            .replace(/<br>/g, " ")
+            .replace(/```[a-zA-Z0-9_-]+/g, "```") // any language identifier => generic
+            .toString()
+            .trim();
+
+          if (editorRef.current) {
+            editorRef.current.setMarkdown(formattedAnswer);
+            form.setValue("content", formattedAnswer);
+            form.trigger("content");
+          }
+        })(),
+        {
+          loading: "Generating AI answer...",
+          success: "AI answer has been generated successfully!",
+          error: (err) =>
+            err instanceof Error ? err.message : "Something went wrong",
+        },
+      );
+    } catch (err) {
+      console.error("AI generation error:", err);
+    } finally {
+      setIsAISubmitting(false);
+    }
   };
 
   return (
@@ -77,6 +136,7 @@ const AnswerForm = ({ questionId }: Props) => {
         <Button
           className="btn light-border-2 gap-1.5 rounded-md border px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
           disabled={isAISubmitting}
+          onClick={generateAIAnswer}
         >
           {isAISubmitting ? (
             <>
@@ -97,6 +157,7 @@ const AnswerForm = ({ questionId }: Props) => {
           )}
         </Button>
       </div>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -133,6 +194,7 @@ const AnswerForm = ({ questionId }: Props) => {
           </div>
         </form>
       </Form>
+      <Toaster />
     </div>
   );
 };
