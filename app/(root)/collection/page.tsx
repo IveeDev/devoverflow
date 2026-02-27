@@ -1,6 +1,6 @@
 import React from "react";
 
-const Collections = () => {
+const Collections = async ({ searchParams }: RouteParams) => {
   return <div>Collections</div>;
 };
 
