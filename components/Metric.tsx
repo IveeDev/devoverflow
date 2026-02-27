@@ -39,7 +39,7 @@ const Metric = ({
         <span
           className={cn(
             "small-medium line-clamp-1",
-            isAuthor ? "max-sm:hidden" : ""
+            isAuthor ? "max-sm:hidden" : "",
           )}
         >
           {title}
