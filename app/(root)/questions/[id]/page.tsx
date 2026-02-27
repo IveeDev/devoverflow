@@ -14,6 +14,8 @@ import { getAnswers } from "@/lib/actions/answer.action";
 import AllAnswers from "@/components/answers/AllAnswers";
 import Votes from "@/components/votes/Votes";
 import { hasVoted } from "@/lib/actions/vote.action";
+import SaveQuestion from "@/components/question/SaveQuestion";
+import { hasSavedQuestion } from "@/lib/actions/collection.action";
 
 const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
@@ -40,6 +42,10 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const hasVotedPromise = hasVoted({
     targetId: question._id,
     targetType: "question",
+  });
+
+  const hasSavedQuestionPromise = hasSavedQuestion({
+    questionId: question._id,
   });
 
   const { author, createdAt, answers, views, tags, content, title } = question!;
@@ -73,12 +79,12 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
               />
             </Suspense>
 
-            {/* <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <SaveQuestion
                 questionId={question._id}
                 hasSavedQuestionPromise={hasSavedQuestionPromise}
               />
-            </Suspense> */}
+            </Suspense>
           </div>
         </div>
 
