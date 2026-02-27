@@ -5,6 +5,8 @@ import ROUTES from "@/constants/routes";
 import { Preview } from "../editor/Preview";
 import { getTimeStamp } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import Votes from "../votes/Votes";
+import { hasVoted } from "@/lib/actions/vote.action";
 
 interface Props extends Answer {
   containerClasses?: string;
@@ -24,6 +26,10 @@ const AnswerCard = ({
   showReadMore = false,
   showActionBtns = false,
 }: Props) => {
+  const hasVotedPromise = hasVoted({
+    targetId: _id,
+    targetType: "answer",
+  });
   return (
     <article
       className={cn("light-border border-b py-10 relative", containerClasses)}
@@ -53,10 +59,21 @@ const AnswerCard = ({
             </p>
           </Link>
         </div>
+
+        <div className="flex justify-end">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Votes
+              targetType="answer"
+              upvotes={upvotes}
+              downvotes={downvotes}
+              targetId={_id}
+              hasVotedPromise={hasVotedPromise}
+            />
+          </Suspense>
+        </div>
       </div>
 
       <Preview content={content} />
-
       {showReadMore && (
         <Link
           href={`/questions/${question}#answer-${_id}`}

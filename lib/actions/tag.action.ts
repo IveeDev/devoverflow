@@ -1,3 +1,5 @@
+"use server";
+
 import action from "../handlers/action";
 import { FilterQuery } from "mongoose";
 import handleError from "../handlers/error";
@@ -96,7 +98,7 @@ export const getTagQuestions = async (
     const tag = await Tag.findById(tagId);
     if (!tag) throw new Error("Tag not found");
 
-    const filterQuery: FilterQuery<typeof Question> = {
+    const filterQuery: RootFilterQuery<typeof Question> = {
       tags: { $in: [tagId] },
     };
     if (query) {
