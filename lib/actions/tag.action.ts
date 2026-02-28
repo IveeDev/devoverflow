@@ -98,7 +98,7 @@ export const getTagQuestions = async (
     const tag = await Tag.findById(tagId);
     if (!tag) throw new Error("Tag not found");
 
-    const filterQuery: RootFilterQuery<typeof Question> = {
+    const filterQuery: FilterQuery<typeof Question> = {
       tags: { $in: [tagId] },
     };
     if (query) {
@@ -124,6 +124,18 @@ export const getTagQuestions = async (
         questions: JSON.parse(JSON.stringify(questions)),
         isNext,
       },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const getPopularTags = async (): Promise<ActionResponse<Tag[]>> => {
+  try {
+    const tags = await Tag.find().sort({ questions: -1 }).limit(5);
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(tags)),
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

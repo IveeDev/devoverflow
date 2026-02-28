@@ -18,6 +18,7 @@ import { EMPTY_QUESTION } from "@/constants/states";
 import CommonFilter from "@/components/filters/CommonFilter";
 import { HomePageFilters } from "@/constants/filters";
 import AllAnswers from "@/components/answers/AllAnswers";
+import Pagination from "@/components/Pagination";
 
 export const metadata: Metadata = {
   title: "Dev Overflow | Home",
@@ -78,27 +79,7 @@ const Home = async ({ searchParams }: RouteParams) => {
         )}
       />
 
-      {/* {success ? (
-        <div className="mt-10 flex w-full flex-col gap-6">
-          {questions && questions?.length > 0 ? (
-            <>
-              {questions?.map((question) => (
-                <QuestionCard key={question._id} question={question} />
-              ))}
-            </>
-          ) : (
-            <div className="mt-10 flex w-full items-center justify-center">
-              <p className="text-dark200_light900">No questions found</p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mt-10 flex w-full items-center justify-center">
-          <p className="text-dark200_light900">
-            {error?.message || "Something went wrong"}
-          </p>
-        </div>
-      )} */}
+      <Pagination page={page} isNext={isNext || false} />
     </>
   );
 };

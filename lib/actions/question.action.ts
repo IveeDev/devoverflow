@@ -328,3 +328,19 @@ export async function incrementViews(
     return handleError(error) as ErrorResponse;
   }
 }
+
+export const getHotQuestions = async (): Promise<
+  ActionResponse<Question[]>
+> => {
+  try {
+    const questions = await Question.find()
+      .sort({ views: -1, upvotes: -1 })
+      .limit(5);
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(questions)),
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
