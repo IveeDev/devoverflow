@@ -35,6 +35,10 @@ const Collections = async ({ searchParams }: SearchParams) => {
           placeholder="Search questions..."
           otherClasses="flex-1"
         />
+        <CommonFilter
+          filters={CollectionFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+        />
       </div>
 
       <DataRenderer

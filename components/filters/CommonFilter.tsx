@@ -40,6 +40,7 @@ const CommonFilter = ({
       key: "filter",
       value,
     });
+    console.log("clicked", newUrl);
 
     router.push(newUrl, { scroll: false });
   };
@@ -51,8 +52,9 @@ const CommonFilter = ({
         defaultValue={paramsFilter || undefined}
       >
         <SelectTrigger
+          onClick={() => console.log("clicked")}
           className={cn(
-            "body-regular no-focus light-border background-light800_dark300  text-dark500_light700 border px-5 py-2.5",
+            "body-regular no-focus cursor-pointer light-border background-light800_dark300 text-dark500_light700 border px-5 py-2.5 w-full min-w-[130px]",
             otherClasses,
           )}
           aria-label="Filter options"
@@ -62,7 +64,7 @@ const CommonFilter = ({
           </div>
         </SelectTrigger>
 
-        <SelectContent className="background-light800_dark300  text-dark500_light700">
+        <SelectContent className="background-light800_dark300  text-dark500_light700 z-999">
           <SelectGroup>
             {filters.map((item) => (
               <SelectItem key={item.value} value={item.value}>

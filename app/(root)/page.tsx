@@ -5,6 +5,7 @@ import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import handleError from "@/lib/handlers/error";
+import { Metadata } from "next";
 import Link from "next/link";
 import logger from "@/lib/logger";
 import { NotFoundError, ValidationError } from "@/lib/http-errors";
@@ -16,6 +17,13 @@ import DataRenderer from "@/components/DataRenderer";
 import { EMPTY_QUESTION } from "@/constants/states";
 import CommonFilter from "@/components/filters/CommonFilter";
 import { HomePageFilters } from "@/constants/filters";
+import AllAnswers from "@/components/answers/AllAnswers";
+
+export const metadata: Metadata = {
+  title: "Dev Overflow | Home",
+  description:
+    "Discover different programming questions and answers with recommendations from the community.",
+};
 
 const Home = async ({ searchParams }: RouteParams) => {
   const { page, pageSize, query, filter } = await searchParams;

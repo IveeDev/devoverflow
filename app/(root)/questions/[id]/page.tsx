@@ -16,10 +16,12 @@ import Votes from "@/components/votes/Votes";
 import { hasVoted } from "@/lib/actions/vote.action";
 import SaveQuestion from "@/components/question/SaveQuestion";
 import { hasSavedQuestion } from "@/lib/actions/collection.action";
+import CommonFilter from "@/components/filters/CommonFilter";
+import { AnswerFilters } from "@/constants/filters";
 
 const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
-  // const { page, pageSize, filter } = await searchParams;
+  const { page, pageSize, filter } = await searchParams;
   const { success, data: question } = await getQuestion({ questionId: id });
 
   after(async () => {
@@ -34,9 +36,9 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
     error: answersError,
   } = await getAnswers({
     questionId: id,
-    page: 1,
-    pageSize: 10,
-    filter: "latest",
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    filter,
   });
 
   const hasVotedPromise = hasVoted({
@@ -132,6 +134,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
 
       <section className="my-5">
         <AllAnswers
+          key={filter ?? "default"}
           data={answersResult?.answers}
           success={areAnswersLoaded}
           totalAnswers={answersResult?.totalAnswers || 0}

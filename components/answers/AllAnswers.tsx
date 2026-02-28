@@ -12,16 +12,15 @@ interface Props extends ActionResponse<Answer[]> {
 const AllAnswers = ({ data, success, error, totalAnswers }: Props) => {
   return (
     <div className="mt-11">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between relative z-10">
         <h3 className="primary-text-gradient">
           {totalAnswers} {totalAnswers === 1 ? "Answer" : "Answers"}
         </h3>
-        {/* <CommonFilter
+        <CommonFilter
           filters={AnswerFilters}
           otherClasses="sm:min-w-32"
           containerClasses="max-xs:w-full"
-        /> */}
-        filter
+        />
       </div>
 
       <DataRenderer
